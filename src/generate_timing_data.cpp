@@ -57,9 +57,10 @@ int32_t main()
     auto timing_max_element             = top_two::generate_data(10'000'000,    n_permutations, top_two::max_element);
     auto timing_max_element_ben_deane   = top_two::generate_data(10'000'000,    n_permutations, top_two::max_element_ben_deane);
     auto timing_accumulate              = top_two::generate_data(10'000'000,   n_permutations, top_two::accumulate);
+    auto timing_transform_reduce        = top_two::generate_data(10'000'000,   n_permutations, top_two::transform_reduce);
 
-    std::ofstream timing_data("timing_data.csv");
-    timing_data << "sort, nth_element, max_element, max_element_ben_deane, accumulate\n";
+    std::ofstream timing_data("results/timing_data.csv");
+    timing_data << "sort, nth_element, max_element, max_element_ben_deane, accumulate, transform_reduce\n";
     for (size_t i = 0; i < n_permutations; ++i)
     {
         timing_data
@@ -67,7 +68,8 @@ int32_t main()
             << timing_nth_element[i] << ","
             << timing_max_element[i] << ","
             << timing_max_element_ben_deane[i] << ","
-            << timing_accumulate[i] << "\n";
+            << timing_accumulate[i] << ","
+            << timing_transform_reduce[i] << "\n";
     }
 
     return 0;

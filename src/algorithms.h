@@ -125,7 +125,7 @@ namespace top_two
 
     TResult accumulate(std::vector<int32_t> const &values)
     {
-        auto const two_largest_op =
+        auto const accumulate_op =
             [](TResult const &result, int32_t value) -> TResult
         {
             if (value > result.largest)
@@ -142,28 +142,37 @@ namespace top_two
             }
         };
 
-        const TResult result{std::numeric_limits<int32_t>::min(),
+        const TResult init{std::numeric_limits<int32_t>::min(),
                              std::numeric_limits<int32_t>::min()};
-        return std::accumulate(values.cbegin(), values.cend(), result, two_largest_op);
+        return std::accumulate(values.cbegin(), values.cend(), init, accumulate_op);
     }
-    /*
-    TResult two_largest_transform_reduce(std::vector<int32_t> const& values) {
-        const TResult result{std::numeric_limits<int32_t>::min(),
-                        std::numeric_limits<int32_t>::min()};
 
-        auto const transform_op = [](int32_t val) -> TResult {
-            return {std::numeric_limits<int32_t>::min(), val};
+    TResult transform_reduce(std::vector<int32_t> const& values) {
+        const TResult init{std::numeric_limits<int32_t>::min(),
+                             std::numeric_limits<int32_t>::min()};
+
+        auto const transform_op = [](int32_t value) -> TResult {
+            return {std::numeric_limits<int32_t>::min(), value};
         };
+
         auto const reduce_op =
             [](TResult const& lhs,
             TResult const& rhs) -> TResult {
-            auto arr = std::array<int32_t, 4>{std::get<0>(lhs), std::get<1>(lhs),
-                                        std::get<0>(rhs), std::get<1>(rhs)};
-            std::sort(arr.begin(), arr.end());
-            return {arr[2], arr[3]};
+            if (lhs.second_largest >= rhs.largest)
+            {
+                return lhs;
+            }
+            else if (rhs.second_largest >= lhs.largest)
+            {
+                return rhs;
+            }
+            else
+            {
+                return {std::min(lhs.largest, rhs.largest), std::max(lhs.largest, rhs.largest)};
+            }
         };
+
         return std::transform_reduce(values.cbegin(), values.cend(), init, reduce_op,
                                     transform_op);
     }
-    */
 }
