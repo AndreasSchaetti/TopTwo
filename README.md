@@ -9,7 +9,14 @@ Design decisions of the experiment
 - Use std::accumulate instead of std::reduce for simpler code
 -- The binary function object that has to be passed to std::reduce is pretty involved. The lambda than is passed to std::algorithm is easy to understand
 
+## Results
+See results/comparison_of_algorithms.png
+
+## Impact of input vector
 In a separate analysis, I measured the execution time for each algorithm for 1'000 permutations. I adapted the size of the input vectors to the algorithm so that each measurement took longer than a few milliseconds. In this way, I hoped to get a reliable measurement of the execution time.
+
+### Results
+See results/analysis-timing-data-centered.png for the data centered around the median and results/analysis-timing-data.png for the original data.
 
 # Parallel algorithms
 TBA
