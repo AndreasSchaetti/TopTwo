@@ -16,7 +16,11 @@ The algorithms _sort_ and _max\_element\_ben\_deane_ were much slower for larger
 
 Clearly, _accumulate_ is the fastest algorithm.
 
-![comparison_of_algorithms](results/comparison_of_algorithms.png) 
+![comparison_of_algorithms](results/comparison_of_algorithms.png)
+
+Here is a zoomed-in graph of the same data for lower sizes of input data:
+
+![comparison_of_algorithms_zoomed](results/comparison_of_algorithms_zoom.png)
 
 ## Impact of input vector
 In a separate analysis, I measured the execution time for each algorithm for 1'000 permutations. I adapted the size of the input vectors to the algorithm so that each measurement took longer than a few milliseconds. In this way, I hoped to get a reliable measurement of the execution time.
@@ -24,7 +28,7 @@ In a separate analysis, I measured the execution time for each algorithm for 1'0
 ### Results
 First I plotted the untouched data as a boxplot. It is hard to know if an outlier is due to the randomization of the input data or because the program was interrupted by the operating system at that time.
 
-In this plot, the median execution time is shown as the central horizontal bar in the boxes. For most algorithms, the box is very tight compared to the median. However, _nth\_element_ seems to be affected by randomization than the other algorithms.
+In this plot, the median execution time is shown as the central horizontal bar in the boxes. For most algorithms, the box is very tight compared to the median. However, _nth\_element_ seems to be affected by randomization than the other algorithms.    
 
 ![analysis-timing-data](results/analysis-timing-data.png) 
 
