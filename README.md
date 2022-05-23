@@ -13,7 +13,7 @@ Algorithms considered in rough order of increasing efficiency:
 # General design decisions of the experiments
 - Measurement variable: average of the execution times over several random permutations of the input data
 - Comparison is done for a fixed number of permutations
-- 
+
 # Sequential algorithms
 I used std::accumulate instead of std::reduce for simpler code. The binary function object that has to be passed to std::reduce is pretty involved. The lambda than is passed to std::algorithm is easy to understand. This solution is probably also faster than using std::reduce sequentially.
 
