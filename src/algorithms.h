@@ -3,8 +3,6 @@
 #include <numeric>
 #include <vector>
 
-#include <iostream>
-
 namespace top_two
 {
     struct TResult
@@ -19,7 +17,7 @@ namespace top_two
 
         TResult() = default;
         TResult(int32_t second_largest_, int32_t largest_) : second_largest(second_largest_), largest(largest_) {}
-        TResult(int32_t val) : second_largest(val), largest(val) { std::cout << "TResult(int32_t val) called with " << val << "\n"; }
+        TResult(int32_t val) : second_largest(val), largest(val) {}  // necessary to satisfy static_assert in implementation of std::reduce (fixed in g++ 12.1)
     };
 
     namespace sequential
