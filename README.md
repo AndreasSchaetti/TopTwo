@@ -24,11 +24,11 @@ The algorithms _sort_ and _max\_element\_ben\_deane_ were much slower for larger
 
 Clearly, _accumulate_ is the fastest algorithm.
 
-![comparison_of_algorithms](results/comparison_of_algorithms.png)
+![comparison_of_algorithms](results/comparison_of_algorithms_sequential.png)
 
 Here is a zoomed-in graph of the same data for lower sizes of input data:
 
-![comparison_of_algorithms_zoomed](results/comparison_of_algorithms_zoom.png)
+![comparison_of_algorithms_zoomed](results/comparison_of_algorithms_sequential_zoomed.png)
 
 ## Impact of input vector
 In a separate analysis, I measured the execution time for each algorithm for 1'000 permutations. I adapted the size of the input vectors to the algorithm so that each measurement took longer than a few milliseconds. In this way, I hoped to get a reliable measurement of the execution time.
@@ -46,12 +46,17 @@ It is a bit difficult to judge the range of the values. I made a second plot tha
 ![analysis-timing-data-centered](results/analysis-timing-data-centered.png) 
 
 # Parallel algorithms
-I used the execution policy std::executions::par_seq for all algorithms.
+I used the execution policy std::executions::par_unseq for all algorithms, meaning that vectorization is possibly used in addition to running in several threads.
 
 ## Results
 _transform\_reduce_ overtakes the two _max\_element_ algorithms but _reduce_ is still the fastest algorithm.
+Surprisingly, _nth\_element_ performs *worse* when running in parallel! I currently don't have an explanation for this phenomenon. It would be interesting to compare the sequenced and unsequenced parallel execution policies.
 
-Surprisingly, _nth\_element_ performs *worse* when running in parallel! I currently don't have an explanation for this phenomenon.
+![comparison_of_algorithms](results/comparison_of_algorithms_parallel.png)
+
+Here is a zoomed-in graph of the same data for a better view of the faster algorithms:
+
+![comparison_of_algorithms_zoomed](results/comparison_of_algorithms_parallel_zoomed.png)
 
 # Environment
 - WSL2 with Ubuntu 20.04 and libtbb-dev
@@ -61,7 +66,7 @@ Surprisingly, _nth\_element_ performs *worse* when running in parallel! I curren
     - -O3
     - -ltbb
 - Machine:
-    - Intel i7-1185G7 @ 3 GHz
+    - Intel i7-1185G7 Quad Core @ 3 GHz
     - 16 GB RAM
 
 # Credits

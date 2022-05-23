@@ -72,7 +72,7 @@ int32_t main()
 
     std::cout << "Using " << n_permutations << " permutations\n";
 
-    std::ofstream results("results/comparison_of_algorithms.csv");
+    std::ofstream results("results/comparison_of_algorithms_sequential.csv");
     results << "size, sort, nth_element, max_element, max_element_ben_deane, accumulate, transform_reduce\n";
 
     for (auto size : sizes)
