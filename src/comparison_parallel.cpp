@@ -63,29 +63,27 @@ int32_t main()
         , 316'228
         , 562'341
         , 1'000'000
-        //, 1'397'940 
-        //, 1'698'970 
-        //, 1'875'061 
+        //, 3'162'278 
         //, 10'000'000
     };
     const size_t n_permutations = 1'000;
 
     std::cout << "Using " << n_permutations << " permutations\n";
 
-    std::ofstream results("results/comparison_of_algorithms.csv");
-    results << "size, sort, nth_element, max_element, max_element_ben_deane, accumulate, transform_reduce\n";
+    std::ofstream results("results/comparison_of_algorithms_parallel.csv");
+    results << "size, sort, nth_element, max_element, max_element_ben_deane, transform_reduce\n";
 
     for (auto size : sizes)
     {
         auto const dataset = top_two::make_dataset(size, n_permutations);
         std::cout << "Dataset: " << dataset.size() << " x " << dataset.front().size() << " = " << dataset.size() * dataset.front().size() << " elements\n";
 
-        auto const duration_sort = size > 100'000 ? -1 : calculate_duration(dataset, top_two::sequential::sort);
-        auto const duration_nth_element = calculate_duration(dataset, top_two::sequential::nth_element);
-        auto const duration_max_element = calculate_duration(dataset, top_two::sequential::max_element);
-        auto const duration_max_element_ben_deane = calculate_duration(dataset, top_two::sequential::max_element_ben_deane);
-        auto const duration_accumulate = calculate_duration(dataset, top_two::sequential::accumulate);
-        auto const duration_transform_reduce = calculate_duration(dataset, top_two::sequential::transform_reduce);
+        auto const duration_sort = size > 1'000'000 ? -1 : top_two::calculate_duration(dataset, top_two::parallel::sort);
+        auto const duration_nth_element = size > 5'000'000 ? -1 : top_two::calculate_duration(dataset, top_two::parallel::nth_element);
+        auto const duration_max_element = top_two::calculate_duration(dataset, top_two::parallel::max_element);
+        auto const duration_max_element_ben_deane = top_two::calculate_duration(dataset, top_two::parallel::max_element_ben_deane);
+        auto const duration_reduce = top_two::calculate_duration(dataset, top_two::parallel::reduce);
+        auto const duration_transform_reduce = top_two::calculate_duration(dataset, top_two::parallel::transform_reduce);
 
         results
             << size << ",";
@@ -97,11 +95,18 @@ int32_t main()
         {
             results << duration_sort << ",";
         }
+        if (duration_nth_element == -1)
+        {
+            results << "NaN,";
+        }
+        else
+        {
+            results << duration_nth_element << ",";
+        }
         results
-            << duration_nth_element << ","
             << duration_max_element << ","
             << duration_max_element_ben_deane << ","
-            << duration_accumulate << ","
+            << duration_reduce << ","
             << duration_transform_reduce << "\n";
     }
     return 0;
