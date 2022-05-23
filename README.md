@@ -8,15 +8,14 @@ Algorithms considered in rough order of increasing efficiency:
 - max_element_ben_deane: use std::max_element to find the largest element, then swap this element with the last element in the data, then find the largest element in the data by excluding the last element
     - This approach is inspired by [Ben Deane](https://twitter.com/ben_deane), who proposed this clever solution in Episodes 75-78 of [ADSP: The Podcast](https://twitter.com/adspthepodcast).
 - accumulate / reduce: use std::accumulate (for sequential execution) or std::reduce (for parallel execution) to make one pass through the data
-- transform-reduce: use std::transform_reduce to split the reduction into two steps. This might be faster than reduction only for parallel execution.
+- transform_reduce: use std::transform_reduce to split the reduction into two steps. This might be faster than reduction only for parallel execution.
 
-# Sequential algorithms
-Design decisions of the experiment
-
+# General design decisions of the experiments
 - Measurement variable: average of the execution times over several random permutations of the input data
 - Comparison is done for a fixed number of permutations
-- Use std::accumulate instead of std::reduce for simpler code
--- The binary function object that has to be passed to std::reduce is pretty involved. The lambda than is passed to std::algorithm is easy to understand
+- 
+# Sequential algorithms
+I used std::accumulate instead of std::reduce for simpler code. The binary function object that has to be passed to std::reduce is pretty involved. The lambda than is passed to std::algorithm is easy to understand. This solution is probably also faster than using std::reduce sequentially.
 
 ## Results
 The following graph shows the average execution time for each size of input data and for each algorithm.
@@ -47,14 +46,20 @@ It is a bit difficult to judge the range of the values. I made a second plot tha
 ![analysis-timing-data-centered](results/analysis-timing-data-centered.png) 
 
 # Parallel algorithms
-TBA
+I used the execution policy std::executions::par_seq for all algorithms.
+
+## Results
+_transform\_reduce_ overtakes the two _max\_element_ algorithms but _reduce_ is still the fastest algorithm.
+
+Surprisingly, _nth\_element_ performs *worse* when running in parallel! I currently don't have an explanation for this phenomenon.
 
 # Environment
-- WSL2 with Ubuntu 20.04
+- WSL2 with Ubuntu 20.04 and libtbb-dev
 - Compiled with:
     - g++ 9.4
     - std=C++17
     - -O3
+    - -ltbb
 - Machine:
     - Intel i7-1185G7 @ 3 GHz
     - 16 GB RAM
