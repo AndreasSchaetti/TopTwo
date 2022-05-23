@@ -71,14 +71,14 @@ int32_t main()
     std::cout << "Using " << n_permutations << " permutations\n";
 
     std::ofstream results("results/comparison_of_algorithms_parallel.csv");
-    results << "size, sort, nth_element, max_element, max_element_ben_deane, transform_reduce\n";
+    results << "size, sort, nth_element, max_element, max_element_ben_deane, reduce, transform_reduce\n";
 
     for (auto size : sizes)
     {
         auto const dataset = top_two::make_dataset(size, n_permutations);
         std::cout << "Dataset: " << dataset.size() << " x " << dataset.front().size() << " = " << dataset.size() * dataset.front().size() << " elements\n";
 
-        auto const duration_sort = size > 1'000'000 ? -1 : top_two::calculate_duration(dataset, top_two::parallel::sort);
+        auto const duration_sort = size > 500'000 ? -1 : top_two::calculate_duration(dataset, top_two::parallel::sort);
         auto const duration_nth_element = size > 5'000'000 ? -1 : top_two::calculate_duration(dataset, top_two::parallel::nth_element);
         auto const duration_max_element = top_two::calculate_duration(dataset, top_two::parallel::max_element);
         auto const duration_max_element_ben_deane = top_two::calculate_duration(dataset, top_two::parallel::max_element_ben_deane);
